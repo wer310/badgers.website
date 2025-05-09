@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>English4you</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container my-4">
+    <h1 class="text-center mb-4">English4you - Learn English with Random Words</h1>
+    <div class="text-center mb-3">
+      <button class="btn btn-primary" onclick="loadWords()">Refresh Words</button>
+    </div>
+    <div id="wordLinks" class="d-flex flex-column align-items-center gap-2"></div>
+  </div>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><center><small>Version: Alpha 1.0.0</small><br><small>Made by Arigadam</small></center>
+
+  <script>
+    async function loadWords() {
+      const response = await fetch('wordlist.txt');
+      const text = await response.text();
+      const words = text.split('\n').map(w => w.trim()).filter(w => w.length > 2 && w.length < 15);
+      const randomWords = [];
+      while (randomWords.length < 5) {
+        const word = words[Math.floor(Math.random() * words.length)];
+        if (!randomWords.includes(word)) randomWords.push(word);
+      }
+
+      const container = document.getElementById('wordLinks');
+      container.innerHTML = '';
+
+      randomWords.forEach(word => {
+        const link = document.createElement('a');
+        link.href = `https://ru.wiktionary.org/wiki/${encodeURIComponent(word)}`;
+        link.target = '_blank';
+        link.className = 'btn btn-outline-secondary';
+        link.textContent = word;
+        container.appendChild(link);
+      });
+    }
+
+    loadWords();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
